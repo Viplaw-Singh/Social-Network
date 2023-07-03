@@ -27,11 +27,18 @@ jobs:
           name: "Run migration"
           command: |
             python manage.py migrate
-  
+       
+      - persist_to_workspace:
+         root: ~/
+         paths:
+            - .pyenv
+      
   build:
     executor: my-executor
     resource_class: medium
     steps:
+      - attach_workspace:
+         at: ~/
       - checkout
       - run:
           name: "Run Test"
