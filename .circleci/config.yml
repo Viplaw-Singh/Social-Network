@@ -1,0 +1,29 @@
+version: 2.1
+orbs:
+  python: circleci/python@1.1.0
+jobs:
+  build:
+    executor: python/default
+    resource_class: medium
+    steps:
+      - checkout
+      - run: 
+          name: "install dependencies"
+          command: |
+            pip  install -r requirements/base.txt
+            pip  install -r requirements/local.txt
+     
+      - run:
+          name: "Run Test"
+          command: |
+            python manage.py migrate
+
+      - run:
+          name: "Run Test"
+          command: |
+            pytest
+           
+workflows:
+  main:
+    jobs:
+      - build
