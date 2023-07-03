@@ -14,7 +14,7 @@ jobs:
             pip  install -r requirements/local.txt
      
       - run:
-          name: "Run Test"
+          name: "Run migration"
           command: |
             python manage.py migrate
 
