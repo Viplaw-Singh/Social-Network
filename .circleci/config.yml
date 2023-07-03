@@ -7,11 +7,12 @@ jobs:
     docker:
       - image: cimg/postgres:12.0
         environment:
-          DB_NAME: socialnetworkdb
-          DB_USER: demo
-          DB_PASSWORD: password
-          DB_HOST: localhost
-          DB_PORT: 5432
+          TEST_DATABASE_URL_1: postgresql://postgres@localhost/socialnetworkdb 
+          POSTGRES_DB: socialnetworkdb
+          POSTGRES_USER: postgres
+          #POSTGRES_PASSWORD: password
+          #POSTGRES_HOST: localhost
+          #POSTGRES_PORT: 5432
 
 
     resource_class: medium
