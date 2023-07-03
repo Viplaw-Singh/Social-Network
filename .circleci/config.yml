@@ -5,7 +5,7 @@ jobs:
   build:
     executor: python/default
     docker:
-      - image: cimg/postgres:12.0
+      - image: cimg/postgres:14.0
         environment:
           TEST_DATABASE_URL_1: postgresql://postgres@localhost/socialnetworkdb 
           POSTGRES_DB: socialnetworkdb
