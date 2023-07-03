@@ -10,7 +10,7 @@ jobs:
         environment:
           TEST_DATABASE_URL_1: postgresql://postgres@localhost/socialnetworkdb 
           POSTGRES_DB: socialnetworkdb
-          POSTGRES_USER: postgres
+          POSTGRES_USER: demo 
           #POSTGRES_PASSWORD: password
           #POSTGRES_HOST: localhost
           #POSTGRES_PORT: 5432
