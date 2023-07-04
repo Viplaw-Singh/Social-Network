@@ -14,7 +14,6 @@ executors:
 jobs:
   install_dependencies:
     executor: my-executor
-    resource_class: medium
     steps:
       - checkout
       - run: 
@@ -32,10 +31,17 @@ jobs:
          root: ~/
          paths:
             - .pyenv
-      
+  
+  wait_for_test_completion:
+        executor: my-executor
+        steps:
+          - checkout
+          - run:
+             name: Wait for Completion
+             command: |
+                echo "lambda test completed"    
   build:
     executor: my-executor
-    resource_class: medium
     steps:
       - attach_workspace:
          at: ~/
@@ -49,6 +55,9 @@ workflows:
   main:
     jobs:
       - install_dependencies
-      - build:
+      - wait_for_test_completion:
           requires:
             - install_dependencies
+      - build:
+          requires:
+            - wait_for_test_completion
