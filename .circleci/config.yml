@@ -14,15 +14,15 @@ jobs:
           name: "install dependencies"
           command: |
             sudo apt-get update -y 
-            sudo apt-get install -y python
-            sudo apt-get install -y python-pip
+            sudo apt-get install -y python3
+            sudo apt-get install -y python3-pip
             pip  install -r requirements/base.txt
             pip  install -r requirements/local.txt
      
       - run:
           name: "Run migration"
           command: |
-            python manage.py migrate
+            python3 manage.py migrate
   
   wait_for_test_completion:
     machine: true
