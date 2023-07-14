@@ -41,6 +41,7 @@ jobs:
       - run:
           name: "Run Test"
           command: |
+            pip install pytest-django
             pytest
            
 workflows:
