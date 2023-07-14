@@ -42,7 +42,7 @@ jobs:
           name: "Run Test"
           command: |
             python3 -m pip install pytest
-            pytest
+            pytest --cov
            
 workflows:
   main:
