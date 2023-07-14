@@ -7,7 +7,7 @@ jobs:
 
   install_dependencies:
     machine: true
-    resource_class: viplaw-singh/ubuntu-machine
+    resource_class: viplaw-singh/ubuntu-runner
     steps:
       - checkout
       - run: 
@@ -23,7 +23,7 @@ jobs:
   
   wait_for_test_completion:
     machine: true
-    resource_class: viplaw-singh/ubuntu-machine
+    resource_class: viplaw-singh/ubuntu-runner
     steps:
       - checkout
       - run:
@@ -32,7 +32,7 @@ jobs:
             echo "lambda test completed"    
   build:
     machine: true
-    resource_class: viplaw-singh/ubuntu-machine
+    resource_class: viplaw-singh/ubuntu-runner
     steps:
       - checkout
       - run:
