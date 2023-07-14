@@ -2,10 +2,17 @@ version: 2.1
 orbs:
   python: circleci/python@1.1.0
 
-jobs:    
-  build:
-    machine: true
-    resource_class: viplaw-singh/ubuntu-machine
+      
+jobs:
+
+  install_dependencies:
+    docker:
+      - image: cimg/python:3.9
+      - image: cimg/postgres:14.0
+        environment:
+          TEST_DATABASE_URL_1: postgresql://postgres@localhost/socialnetworkdb 
+          POSTGRES_DB: socialnetworkdb
+          POSTGRES_USER: demo
     steps:
       - checkout
       - run: 
@@ -13,14 +20,55 @@ jobs:
           command: |
             pip  install -r requirements/base.txt
             pip  install -r requirements/local.txt
+     
+      - run:
+          name: "Run migration"
+          command: |
+            python manage.py migrate
+       
+      - persist_to_workspace:
+         root: ~/
+         paths:
+            - .pyenv
+  
+  wait_for_test_completion:
+    docker:
+      - image: cimg/python:3.9
+      - image: cimg/postgres:14.0
+        environment:
+          TEST_DATABASE_URL_1: postgresql://postgres@localhost/socialnetworkdb 
+          POSTGRES_DB: socialnetworkdb
+          POSTGRES_USER: demo
+    steps:
+      - checkout
+      - run:
+          name: Wait for Completion
+          command: |
+            echo "lambda test completed"    
+  build:
+    docker:
+      - image: cimg/python:3.9
+      - image: cimg/postgres:14.0
+        environment:
+          TEST_DATABASE_URL_1: postgresql://postgres@localhost/socialnetworkdb 
+          POSTGRES_DB: socialnetworkdb
+          POSTGRES_USER: demo
+    steps:
+      - attach_workspace:
+         at: ~/
+      - checkout
       - run:
           name: "Run Test"
           command: |
-            pyhton manage.py migrate
             pytest
            
 workflows:
   main:
     jobs:
-      - build
-          
+      - install_dependencies
+      - wait_for_test_completion:
+          requires:
+            - install_dependencies
+      - build:
+          requires:
+            - wait_for_test_completion
