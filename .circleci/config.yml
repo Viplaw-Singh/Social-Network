@@ -23,34 +23,35 @@ jobs:
           name: "Run migration"
           command: |
             python3 manage.py migrate
+            pytest
   
-  wait_for_test_completion:
-    machine: true
-    resource_class: viplaw-singh/ubuntu-runner
-    steps:
-      - checkout
-      - run:
-          name: Wait for Completion
-          command: |
-            echo "lambda test completed"    
-  build:
-    machine: true
-    resource_class: viplaw-singh/ubuntu-runner
-    steps:
-      - checkout
-      - run:
-          name: "Run Test"
-          command: |
-            python3 -m pip install pytest
-            pytest --cov
+  #wait_for_test_completion:
+    #machine: true
+    #resource_class: viplaw-singh/ubuntu-runner
+    #steps:
+      #- checkout
+      #- run:
+          #name: Wait for Completion
+          #command: |
+            #echo "lambda test completed"    
+  #build:
+    #machine: true
+    #resource_class: viplaw-singh/ubuntu-runner
+    #steps:
+      #- checkout
+      #- run:
+          #name: "Run Test"
+          #command: |
+            #python3 -m pip install pytest
+            #pytest --cov
            
 workflows:
   main:
     jobs:
       - install_dependencies
-      - wait_for_test_completion
+      #- wait_for_test_completion
           #requires:
             #- install_dependencies
-      - build
+      #- build
           #requires:
             #- wait_for_test_completion
