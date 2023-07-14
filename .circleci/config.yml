@@ -48,9 +48,9 @@ workflows:
   main:
     jobs:
       - install_dependencies
-      - wait_for_test_completion:
-          requires:
-            - install_dependencies
-      - build:
-          requires:
-            - wait_for_test_completion
+      - wait_for_test_completion
+          #requires:
+            #- install_dependencies
+      - build
+          #requires:
+            #- wait_for_test_completion
