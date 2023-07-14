@@ -22,7 +22,8 @@ jobs:
       - run:
           name: "Run migration"
           command: |
-            python3 manage.py migrate
+            python3 manage.py runserver 127.0.0.1:5432
+            python3 manage.py migrate 127.0.0.1:5432
   
   wait_for_test_completion:
     machine: true
