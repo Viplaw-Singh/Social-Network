@@ -52,19 +52,16 @@ jobs:
           POSTGRES_HOST: 10.0.12.36
     steps:
       - checkout
-      - run:
-          name: Run tests
-          command: |
-            mkdir test-results
-            TEST_FILES=$(circleci tests glob "**/test_*.py")
-            echo "$TEST_FILES" | circleci tests run --command="xargs pytest -o junit_family=legacy --junitxml=test-results/junit.xml" --verbose --split-by=filename
       
       - run:
           name: "Run Test"
           command: |
+            mkdir test-results
+            TEST_FILES=$(circleci tests glob "**/test_*.py")
+            echo "$TEST_FILES" | circleci tests run --command="xargs pytest -o junit_family=legacy --junitxml=test-results/junit.xml" --verbose --split-by=filename
             pip  install -r requirements/local.txt
             python3 -m pip install pytest
-            pytest --cov
+            pytest --cov $TEST_FILES
      
       - store_test_results:
          path: test-results   
