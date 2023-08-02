@@ -5,10 +5,12 @@ jobs:
     machine: true
     resource_class: viplaw-singh/build
     environment:
-          TEST_DATABASE_URL_1: postgresql://postgres@localhost/socialnetworkdb 
-          POSTGRES_DB: socialnetworkdb
-          POSTGRES_USER: demo
+          TEST_DATABASE_URL_1: postgresql://postgres@10.0.12.36/circle_test 
+          POSTGRES_DB: circle_test
+          POSTGRES_USER: postgres
           POSTGRES_HOST: 10.0.12.36
+          POSTGRES_PORT: 5432
+
     steps:
       - checkout
       - run: 
@@ -49,10 +51,10 @@ jobs:
     machine: true
     resource_class: viplaw-singh/test
     environment:
-          TEST_DATABASE_URL_1: postgresql://postgres@localhost/circle_test 
+          TEST_DATABASE_URL_1: postgresql://postgres@10.0.12.36/circle_test 
           POSTGRES_DB: circle_test
           POSTGRES_USER: postgres
-          POSTGRES_HOST: localhost
+          POSTGRES_HOST: 10.0.12.36
           POSTGRES_PORT: 5432
           
     steps:
