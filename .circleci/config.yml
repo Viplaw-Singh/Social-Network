@@ -18,13 +18,21 @@ jobs:
             sudo apt-get install -y python3
             sudo apt-get install -y python3-pip
             pip  install -r requirements/base.txt
-  
+      - run:
+          name: Run tests
+          command: |
+            mkdir test-results
+            TEST_FILES=$(circleci tests glob "**/test_*.py")
+            echo "$TEST_FILES" | circleci tests run --command="xargs pytest -o junit_family=legacy --junitxml=test-results/junit.xml" 
       - run:
           name: "Run migration"
           command: |
             python3 manage.py migrate
-            pytest
-  
+            pytest $TEST_FILES
+
+      - store_test_results:
+         path: test-results  
+
   #wait_for_test_completion:
     #machine: true
     #resource_class: viplaw-singh/ubuntu-runner
