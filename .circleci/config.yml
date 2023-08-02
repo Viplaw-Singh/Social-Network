@@ -3,11 +3,12 @@ version: 2.1
 jobs:
   build:
     machine: true
-    resource_class: viplaw-singh/test
+    resource_class: viplaw-singh/build
     environment:
           TEST_DATABASE_URL_1: postgresql://postgres@localhost/socialnetworkdb 
           POSTGRES_DB: socialnetworkdb
           POSTGRES_USER: demo
+          POSTGRES_HOST: 10.0.12.36
     steps:
       - checkout
       - run: 
@@ -35,7 +36,12 @@ jobs:
             #echo "lambda test completed"    
   test:
     machine: true
-    resource_class: viplaw-singh/build
+    resource_class: viplaw-singh/test
+    environment:
+          TEST_DATABASE_URL_1: postgresql://postgres@localhost/socialnetworkdb 
+          POSTGRES_DB: socialnetworkdb
+          POSTGRES_USER: demo
+          POSTGRES_HOST: 10.0.12.36
     steps:
       - checkout
       - run:
