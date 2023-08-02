@@ -1,32 +1,23 @@
 version: 2.1
-orbs:
-  python: circleci/python@1.1.0
-executors:
-  my-executor:
-    docker:
-      - image: cimg/python:3.9
-      - image: cimg/postgres:14.0
-        environment:
+      
+jobs:
+  build:
+    machine: true
+    resource_class: viplaw-singh/test
+    environment:
           TEST_DATABASE_URL_1: postgresql://postgres@localhost/socialnetworkdb 
           POSTGRES_DB: socialnetworkdb
           POSTGRES_USER: demo
-      
-jobs:
-  executors: my-executor
-  install_dependencies:
-    machine: true
-    resource_class: viplaw-singh/ubuntu-runner
     steps:
       - checkout
       - run: 
-          name: "install dependencies"
+          name: "install dependencies and Build"
           command: |
-            #sudo apt-get update -y 
-            #sudo apt-get install -y python3
-            #sudo apt-get install -y python3-pip
+            sudo apt-get update -y 
+            sudo apt-get install -y python3
+            sudo apt-get install -y python3-pip
             pip  install -r requirements/base.txt
-            pip  install -r requirements/local.txt
-     
+  
       - run:
           name: "Run migration"
           command: |
@@ -42,21 +33,23 @@ jobs:
           #name: Wait for Completion
           #command: |
             #echo "lambda test completed"    
-  #build:
-    #machine: true
-    #resource_class: viplaw-singh/ubuntu-runner
-    #steps:
-      #- checkout
-      #- run:
-          #name: "Run Test"
-          #command: |
-            #python3 -m pip install pytest
-            #pytest --cov
+  test:
+    machine: true
+    resource_class: viplaw-singh/build
+    steps:
+      - checkout
+      - run:
+          name: "Run Test"
+          command: |
+            pip  install -r requirements/local.txt
+            python3 -m pip install pytest
+            pytest --cov
            
 workflows:
   main:
     jobs:
-      - install_dependencies
+      - build
+      - test
       #- wait_for_test_completion
           #requires:
             #- install_dependencies
