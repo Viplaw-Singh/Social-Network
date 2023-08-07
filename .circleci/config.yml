@@ -1,6 +1,23 @@
 version: 2.1
       
 jobs:
+  
+  Docker-start:
+    machine: true
+    resource_class: viplaw-singh/ubuntu
+    steps:
+      
+      # Start the Docker Compose services
+      - run:
+          name: Start Docker Compose
+          command: |
+             docker-compose -f /var/opt/circleci/lambda-docker-compose.yml up -d 
+
+      # Wait for the services to be ready (e.g., PostgreSQL may take a few seconds to start)
+      - run:
+          name: Wait for services to be ready
+          command: sleep 5
+
   build:
     machine: true
     resource_class: viplaw-singh/build
@@ -73,15 +90,29 @@ jobs:
       - store_test_results:
          path: test-results   
            
+
+  Docker-down:
+    machine: true
+    resource_class: viplaw-singh/ubuntu
+    steps:
+     # Stop the Docker Compose services after the build is complete
+      - run:
+          name: Stop Docker Compose
+          command: |
+             docker-compose down
+            
+
 workflows:
   main:
     jobs:
-      - build
-      - test
-          
-      #- wait_for_test_completion
-          #requires:
-            #- install_dependencies
-      #- build
-          #requires:
-            #- wait_for_test_completion
+      - Docker-start
+      - build:
+          requires:
+            - Docker-start
+      - test:
+          requires:
+            - Docker-start
+      - Docker-down:
+          requires:
+             - build
+             - test
