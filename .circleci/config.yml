@@ -11,7 +11,7 @@ jobs:
       - run:
           name: Start Docker Compose
           command: |
-             docker-compose up -d 
+             sudo docker-compose up -d 
 
       # Wait for the services to be ready (e.g., PostgreSQL may take a few seconds to start)
       - run:
@@ -99,7 +99,7 @@ jobs:
       - run:
           name: Stop Docker Compose
           command: |
-             docker-compose down
+             sudo docker-compose down
             
 
 workflows:
