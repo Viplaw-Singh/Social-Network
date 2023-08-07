@@ -11,7 +11,7 @@ jobs:
       - run:
           name: Start Docker Compose
           command: |
-             docker-compose -f /var/opt/circleci/lambda-docker-compose.yml up -d 
+             docker-compose up -d 
 
       # Wait for the services to be ready (e.g., PostgreSQL may take a few seconds to start)
       - run:
@@ -93,7 +93,7 @@ jobs:
 
   Docker-down:
     machine: true
-    resource_class: viplaw-singh/ubuntu
+    resource_class: viplaw-singh/ubuntu-22
     steps:
      # Stop the Docker Compose services after the build is complete
       - run:
