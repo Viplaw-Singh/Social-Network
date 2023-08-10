@@ -6,7 +6,7 @@ jobs:
     machine: true
     resource_class: viplaw-singh/ubuntu-22
     steps:
-      
+      - checkout
       # Start the Docker Compose services
       - run:
           name: Start Docker Compose
