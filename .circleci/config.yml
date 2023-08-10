@@ -21,6 +21,8 @@ jobs:
       - run:
           name: "Run migration"
           command: |
+            virtualenv myenv
+            source myenv/bin/activate
             python3 manage.py migrate
 
   build:
