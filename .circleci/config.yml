@@ -12,12 +12,7 @@ jobs:
           name: Start Docker Compose
           command: |
              sudo docker-compose up -d 
-
-      # Wait for the services to be ready (e.g., PostgreSQL may take a few seconds to start)
-      - run:
-          name: Wait for services to be ready
-          command: sleep 5
-
+             
       - run:
           name: "Run migration"
           command: |
