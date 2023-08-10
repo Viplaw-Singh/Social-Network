@@ -18,6 +18,11 @@ jobs:
           name: Wait for services to be ready
           command: sleep 5
 
+      - run:
+          name: "Run migration"
+          command: |
+            python3 manage.py migrate
+
   build:
     machine: true
     resource_class: viplaw-singh/build
@@ -38,12 +43,6 @@ jobs:
             sudo apt-get install -y python3-pip
             pip  install -r requirements/base.txt
       
-      - run:
-          name: "Run migration"
-          command: |
-            python3 manage.py migrate
-            
-
       - run:
           name: Run tests
           command: |
