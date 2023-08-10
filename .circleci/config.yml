@@ -18,6 +18,7 @@ jobs:
           command: |
             virtualenv myenv
             source myenv/bin/activate
+            pip  install -r requirements/base.txt
             python3 manage.py migrate
 
   build:
