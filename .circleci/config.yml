@@ -104,9 +104,11 @@ workflows:
     jobs:
       - Docker-start
       - build:
+          context: env
           requires:
             - Docker-start
       - test:
+          context: env
           requires:
             - Docker-start
       - Docker-down:
