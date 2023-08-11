@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   build-python:
-    image: b86b296766e3
+    image: 6d8374115f67
     container_name: build-python
     ports:
       - "5000:80"
@@ -13,7 +13,7 @@ services:
       - postgres
 
   test-python:
-    image: b86b296766e3
+    image: d704f54b1fae
     container_name: test-python
     ports:
       - "5001:80"
