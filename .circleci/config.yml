@@ -11,7 +11,7 @@ jobs:
       - run:
           name: Start Docker Compose
           command: |
-             docker-compose up -d 
+             sudo docker-compose up -d 
              
       - run:
           name: "Run migration"
@@ -96,13 +96,14 @@ jobs:
       - run:
           name: Stop Docker Compose
           command: |
-             docker-compose down
+             sudo docker-compose down
             
 
 workflows:
   main:
     jobs:
-      - Docker-start
+      - Docker-start:
+          context: env
       - build:
           context: env
           requires:
