@@ -1,10 +1,34 @@
 version: 2.1
+
+workflows:
+  main:
+    jobs:
+      - Docker-start:
+          context: env
+      - build:
+          context: env
+          requires:
+            - Docker-start
+      - test:
+          context: env
+          requires:
+            - Docker-start
+      - Docker-down:
+          requires:
+             - build
+             - test
       
 jobs:
   
   Docker-start:
     machine: true
     resource_class: viplaw-singh/ubuntu-22
+    environment:
+          TEST_DATABASE_URL_1: postgresql://postgres@postgres/circle_test 
+          POSTGRES_DB: $DB_NAME
+          POSTGRES_USER: $DB_USER
+          POSTGRES_HOST: $DB_HOST
+          POSTGRES_PORT: $DB_PORT 
     steps:
       - checkout
       # Start the Docker Compose services
@@ -19,13 +43,13 @@ jobs:
             virtualenv myenv
             source myenv/bin/activate
             pip  install -r requirements/base.txt
-            python3 manage.py migrate
+            DB_HOST=postgres python3 manage.py migrate
 
   build:
     machine: true
     resource_class: viplaw-singh/build
     environment:
-          TEST_DATABASE_URL_1: postgresql://postgres@10.0.12.36/circle_test 
+          TEST_DATABASE_URL_1: postgresql://postgres@postgres/circle_test 
           POSTGRES_DB: circle_test
           POSTGRES_USER: postgres
           POSTGRES_HOST: postgres
@@ -65,7 +89,7 @@ jobs:
     machine: true
     resource_class: viplaw-singh/test
     environment:
-          TEST_DATABASE_URL_1: postgresql://postgres@10.0.12.36/circle_test 
+          TEST_DATABASE_URL_1: postgresql://postgres@potgres/circle_test 
           POSTGRES_DB: circle_test
           POSTGRES_USER: postgres
           POSTGRES_HOST: postgres
@@ -99,20 +123,4 @@ jobs:
              sudo docker-compose down
             
 
-workflows:
-  main:
-    jobs:
-      - Docker-start:
-          context: env
-      - build:
-          context: env
-          requires:
-            - Docker-start
-      - test:
-          context: env
-          requires:
-            - Docker-start
-      - Docker-down:
-          requires:
-             - build
-             - test
+
